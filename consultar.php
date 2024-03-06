@@ -1,0 +1,240 @@
+<!--Acesso aos dados do Firebase-->
+<?php
+include("config.php");
+include("firebaseRDB.php");
+$db = new firebaseRDB($databaseURL);
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<!--Bootstrap-->
+<link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"><script src="js/bootstrap.min.js"></script><script src="js/jquery.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css"><link rel="stylesheet" href="css/all.css"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/bootstrap.min.css"><link rel="stylesheet" href="css/style.css"><meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <link rel="icon" href="template/icon/icone_avell.ico"><br>
+  <title>TESTES AVELL</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+  <br>
+  <div class="container"><div class="shadow-lg p-3 mb-5 bg-white rounded"><td><img class="d-block w-5" src="template/image/avell-title.jpg" alt="Logo Avell"></td><h5>MÁQUINAS TESTADAS</h5></div></div>
+  <!-- Favicons -->
+  <link href="assets/img/avell-title.jpg" rel="icon"><link href="assets/img/avell-title.jpg" rel="apple-touch-icon">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet"><link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"><link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+
+<!--Bloco dos efeitos da tabela-->
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link href="assets/css/fresh-bootstrap-table.css" rel="stylesheet" />
+  <link href="assets/css/demo.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/all.css" />
+  <link href="assets/css/googleLapis.css" rel="stylesheet" type="text/css">
+  <script src="assets/js/jquery-3.3.1.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/bootstrap-table.min.js"></script>
+  <script src="assets/js/demo/gsdk-switch.js"></script>
+  <script src="assets/js/demo/jquery.sharrre.js"></script>
+  <script src="assets/js/demo/demo.js"></script>
+  <!--Bloco dos efeitos da tabela-->,
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<!--div class="col-md-auto"-->
+      <div class="col-md-1200">
+      <!--h4>BASE DE DADOS DE TESTES</h4-->
+      <br>
+			<div class="fresh-table full-screen-table">
+            <table id="fresh-table" class="table"><!--CAMPOS DE CONSULTA DA TABELA-->
+              <thead>
+                <!--th data-field="id">ID</th-->
+                <th data-field="Serial" data-sortable="true">Numero de Serie</th>
+                <th data-field="DataRevisao" data-sortable="true">DataRevisao</th>
+                <th data-field="HoraRevisao" data-sortable="true">HoraRevisao</th>
+              </thead>
+                <tbody>
+                  <tr>
+                  <?php
+                  #AJUSTES PARA CONSULTA NO FIREBASE:
+                  $data = $db->retrieve("POSTO_REVISAO");
+                  $data = json_decode($data, 1);
+                  
+                  if(is_array($data)){
+                     foreach($data as $id => $avell){
+
+
+                      echo  "<tr>
+                      <td>{$avell['Serial']}</td>
+                      <td>{$avell['DataRevisao']}</td>
+                      <td>{$avell['HoraRevisao']}</td>
+                      </tr>";
+
+
+                      #echo "<Tr><td>";        
+                      #echo $avell['Serial'];
+                      #echo "<td>";        
+                      #echo $row['DataRevisao'];
+                      #echo "<td>";        
+                      #echo $row['use_in'];
+                      #echo "<td>";
+                      #echo date ('d-m-Y',strtotime($row['last_calibration']));
+                      #echo "<td>";
+                      #echo date ('d-m-Y',strtotime($row['next_calibration']));
+                      #echo "<td>";
+                      #echo $row['incoming_nf'];
+
+
+
+
+                     }
+                  }
+                  ?>
+                  </tr>
+                </tbody>
+                <td>
+              <!--Tabela-->
+            </table>
+            </div>
+              <div class="description description-footer"></div>
+            </div>
+			</div>
+		</div>
+	</div>
+</body>
+<!-- Copyright -->
+<div class="footer-copyright text-center py-3">© 2024 Copyright:<a href="" target="_blank">AVELL MANAUS / AM</a>
+<footer>Desenvolvido por: <a href="mailto:amaury@avell.com.br">Engenharia</a></footer>
+</div>
+
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery-3.3.1.slim.min.js"></script>
+<script src="js/popper.min.js"></script>
+<!--SCRIP DAS FUNCIONALIDADES DA TABELA-->
+<script type="text/javascript">
+    var $table = $('#fresh-table')
+    var $alertBtn = $('#alertBtn')
+
+    window.operateEvents = {
+      'click .like': function (e, value, row, index) {
+        alert('You click like icon, row: ' + JSON.stringify(row))
+        console.log(value, row, index)
+      },
+      'click .edit': function (e, value, row, index) {
+        alert('You click edit icon, row: ' + JSON.stringify(row))
+        console.log(value, row, index)
+      },
+      'click .remove': function (e, value, row, index) {
+        $table.bootstrapTable('remove', {
+          field: 'id',
+          values: [row.id]
+        })
+      }
+    }
+
+    function operateFormatter(value, row, index) {
+      return [
+        '<a rel="tooltip" title="Like" class="table-action like" href="javascript:void(0)" title="Like">',
+          '<i class="fa fa-heart"></i>',
+        '</a>',
+        '<a rel="tooltip" title="Edit" class="table-action edit" href="javascript:void(0)" title="Edit">',
+          '<i class="fa fa-edit"></i>',
+        '</a>',
+        '<a rel="tooltip" title="Remove" class="table-action remove" href="javascript:void(0)" title="Remove">',
+          '<i class="fa fa-remove"></i>',
+        '</a>'
+      ].join('')
+    }
+
+    $(function () {
+      $table.bootstrapTable({
+        classes: 'table table-hover table-striped',
+        toolbar: '.toolbar',
+
+        search: true,
+        showRefresh: true,
+        showToggle: true,
+        showColumns: true,
+        pagination: true,
+        striped: true,
+        sortable: true,
+        pageSize: 8,
+        pageList: [8, 10, 25, 50, 100],
+
+        formatShowingRows: function (pageFrom, pageTo, totalRows) {
+          return ''
+        },
+        formatRecordsPerPage: function (pageNumber) {
+          return pageNumber + ' rows visible'
+        }
+      })
+
+      $alertBtn.click(function () {
+        alert('You pressed on Alert')
+      })
+    })
+
+    $('#sharrreTitle').sharrre({
+      share: {
+        twitter: true,
+        facebook: true
+      },
+      template: '',
+      enableHover: false,
+      enableTracking: true,
+      render: function (api, options) {
+        $("#sharrreTitle").html('Thank you for ' + options.total + ' shares!')
+      },
+      enableTracking: true,
+      url: location.href
+    })
+
+    $('#twitter').sharrre({
+      share: {
+        twitter: true
+      },
+      enableHover: false,
+      enableTracking: true,
+      buttons: { twitter: {via: 'CreativeTim'}},
+      click: function (api, options) {
+        api.simulateClick()
+        api.openPopup('twitter')
+      },
+      template: '<i class="fa fa-twitter"></i> {total}',
+      url: location.href
+    })
+
+    $('#facebook').sharrre({
+      share: {
+        facebook: true
+      },
+      enableHover: false,
+      enableTracking: true,
+      click: function (api, options) {
+        api.simulateClick()
+        api.openPopup('facebook')
+      },
+      template: '<i class="fa fa-facebook-square"></i> {total}',
+      url: location.href
+    })
+  </script>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','assets/js/analytics.js','ga')
+
+    ga('create', 'UA-46172202-1', 'auto')
+    ga('send', 'pageview')
+
+  </script>
+<!--SCRIP DAS FUNCIONALIDADES DA TABELA-->
+</html>
